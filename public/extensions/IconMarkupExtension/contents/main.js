@@ -24,6 +24,40 @@ class IconMarkupExtension extends Autodesk.Viewing.Extension {
     }
 
     load() {
+
+        const changeSelectCallback = () => {
+  
+            const selectedIds = viewer.getSelection();
+
+            var fragList = this.viewer.model.getFragmentList();
+            console.log("selectedIds:" + selectedIds);
+        };
+
+        this.viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, changeSelectCallback);
+
+
+        var instanceTree = viewer.model.getData().instanceTree;
+        var rootId = this.rootId = instanceTree.getRootId();
+        var alldbId = [];
+        var queue = [];
+        queue.push(rootId);
+
+
+
+    while (queue.length > 0) {
+      var node = queue.shift();
+      alldbId.push(node);
+      instanceTree.enumNodeChildren(node, function(childrenIds) {
+        queue.push(childrenIds);
+      });
+
+
+    }
+    console.log(alldbId);
+
+
+        ////////////////////////////
+
         if (this.viewer.model.getInstanceTree()) {
             this.customize();
         } else {
