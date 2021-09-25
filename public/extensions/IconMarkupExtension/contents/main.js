@@ -25,6 +25,8 @@ class IconMarkupExtension extends Autodesk.Viewing.Extension {
 
     load() {
 
+      
+      //선택하여 객체정보 보기
         const changeSelectCallback = () => {
   
             const selectedIds = viewer.getSelection();
@@ -34,6 +36,44 @@ class IconMarkupExtension extends Autodesk.Viewing.Extension {
         };
 
         this.viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, changeSelectCallback);
+
+
+        //선택한객체 정보 및 World matrix, World bounds 구하기
+        viewer.addEventListener(Autodesk.Viewing.SELECTION_CHANGED_EVENT, function () {
+
+            const tree = viewer.model.getInstanceTree();
+            const frags = viewer.model.getFragmentList();
+            function listFragmentProperties(fragId) {
+              console.log('Fragment ID:', fragId);
+              // Get IDs of all objects linked to this fragment
+              const objectIds = frags.getDbIds(fragId);
+              console.log('Linked object IDs:', objectIds);
+              // Get the fragment's world matrix
+              let matrix = new THREE.Matrix4();
+              frags.getWorldMatrix(fragId, matrix);
+              console.log('World matrix:', JSON.stringify(matrix));
+              // Get the fragment's world bounds
+              let bbox = new THREE.Box3();
+              frags.getWorldBounds(fragId, bbox);
+              console.log('World bounds:', JSON.stringify(bbox));
+            }
+            if (tree) { // Could be null if the tree hasn't been loaded yet
+                const selectedIds = viewer.getSelection();
+                for (const dbId of selectedIds) {
+                  const fragIds = [];
+                  tree.enumNodeFragments(
+                    dbId,
+                    listFragmentProperties,
+                    false
+                  );
+                }
+              }
+
+        });
+
+
+
+
 
 
         var instanceTree = viewer.model.getData().instanceTree;

@@ -8,9 +8,11 @@
             { "dbId": 5142,  "label": "45&#176;C", "css": "fas fa-thermometer-empty" },
             { "dbId": 2478,  "label": "45&#176;C", "css": "fas fa-thermometer-empty" },
             { "dbId": 4467,  "label": "30&#176;C", "css": "fas fa-thermometer-empty" },
+            { "dbId": 2481,                        "css": "fas fa-thermometer-empty" },
             { "dbId": 4078,  "label": "45&#176;C", "css": "fas fa-thermometer-empty" }
           
         ],
+        
         "button": {
             "icon": "fa-thermometer-half",
             "tooltip": "Show Temperature"
